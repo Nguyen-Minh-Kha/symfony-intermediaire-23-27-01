@@ -16,6 +16,9 @@
              </p>
             {% endif %}
             <p> {{ author.name }}</p>
+
+            <a href="{{ path('app_author_remove' , {id: author.id})}}"> Supprimer</a>
+            <a href="{{ path('app_author_update' , {id: author.id})}}"> Modifier</a>
         </div>
     {% endfor %}
 {% endblock %}
