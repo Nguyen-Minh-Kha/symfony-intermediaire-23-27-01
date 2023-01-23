@@ -23,7 +23,7 @@ class AuthorController extends AbstractController
 
 
      /**
-     * @Route("/admin/auteur/nouveau", name="app_author_create")
+     * @Route("/admin/auteurs/nouveau", name="app_author_create")
      */
     public function create(Request $request , AuthorRepository $repository): Response
     {
@@ -54,7 +54,7 @@ class AuthorController extends AbstractController
 
 
      /**
-     * @Route("/admin/auteur", name="app_author_list")
+     * @Route("/admin/auteurs", name="app_author_list")
      */
     public function list(AuthorRepository $repository): Response
     {
@@ -66,6 +66,40 @@ class AuthorController extends AbstractController
             'authors' => $authors,
         ] );
 
+    }
+
+
+     /**
+     * @Route("/admin/auteurs/{id}", name="app_author_update")
+     */
+    public function update(int $id, Request $request , AuthorRepository $repository): Response
+    {
+        //recuperer l'auteur à partir de l'id
+        $author = $repository->find($id);
+
+        //tester si la formulaire est envoyé
+        if($request->isMethod('POST')){
+            
+             //récupérer les données du formulaire
+             $name= $request->request->get('name');
+             $description= $request->request->get('description');
+             $imageUrl= $request->request->get('imageUrl');
+
+             //mise à jour des informations de l'auteur
+            $author->setName($name);
+            $author->setDescription($description);
+            $author->setImageUrl($imageUrl);
+
+            //enregistrer l'auteur
+            $repository->add($author , true);
+
+            //redirection vers la page de liste
+            return $this->redirectToRoute('app_author_list');
+
+        }
+
+
+        return $this->render('author/update.html.twig', [ 'author' => $author] );
     }
 
 }
