@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des auteurs{% endblock %}
+
+{% block body %}
+    <h1>Liste des auteurs </h1>
+    <nav>
+    <a href="{{ path('app_author_create') }}"> Ajouter un auteur</a>
+    </nav>
+
+    {% for author in authors %}
+        <div>
+            {% if author.imageUrl %}
+             <p>
+                <img src="{{ author.imageUrl }}" alt="{{ author.name }}" />
+             </p>
+            {% endif %}
+            <p> {{ author.name }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}

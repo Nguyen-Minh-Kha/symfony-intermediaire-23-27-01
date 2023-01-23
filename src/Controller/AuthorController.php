@@ -44,12 +44,28 @@ class AuthorController extends AbstractController
             //enregistrer l'auteur dans la bd grace au repository
             $repository->add($author, true);
 
-            //redirection de l'utilisateur vers l'index
-            return $this->redirectToRoute('app_author');
+            //redirection de l'utilisateur vers la liste des auteurs
+            return $this->redirectToRoute('app_author_list');
         }
         return $this->render('author/create.html.twig', []);
     }
 
 
+
+
+     /**
+     * @Route("/admin/auteur", name="app_author_list")
+     */
+    public function list(AuthorRepository $repository): Response
+    {
+
+        //recuperer les auteurs depuis la bd
+        $authors= $repository->findAll(); //retourne la liste compléte des auteurs
+
+        return $this->render('author/list.html.twig', [
+            'authors' => $authors,
+        ] );
+
+    }
 
 }
