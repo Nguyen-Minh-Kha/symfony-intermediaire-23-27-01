@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle categorie{% endblock %}
+
+{% block body %}
+        <h1>{% block pageTitle %} Nouvelle categorie {% endblock %}</h1>
+    <form method= "POST">
+        <label for="name"> Nom de la categorie: </label>
+        <input type="text" name="name" id="name" value="{% block nameValue '' %}"/>
+        
+        <button type="submit">Envoyer</button>
+    </form>
+
+
+
+{% endblock %}
