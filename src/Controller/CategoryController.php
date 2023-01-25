@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Form\AdminCategoryType;
 use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,24 +28,27 @@ class CategoryController extends AbstractController
      */
     public function create(Request $request , CategoryRepository $repository): Response
     {
-        //tester si le formulaire a était envoyé
-        if ($request->isMethod('POST')){
+       //création du formulaire je n'ai pas besoin d'ajouter un objet Category en paramétre car je ne fait pas de préremplissage
+       $form= $this->createForm(AdminCategoryType::class);
+       //remplir le formulaire avec les données envoyées par l'utilisateur
+       $form->handleRequest($request);
 
-            //récupérer les données du formulaire
-            $name= $request->request->get('name');
 
-            //créer l'entité category à partir des données du formulaire
-            $category= new Category();
-            $category->setName($name);
-           
+       //tester si le formulaire a était envoyé et est valide
+       if ($form->isSubmitted() && $form->isValid()){
 
-            //enregistrer la category dans la bd grace au repository
-            $repository->add($category, true);
+           //récupérer les données du formulaire dans un objet category
+           $category= $form->getData();
 
-            //redirection de l'utilisateur vers la liste des categories
-            return $this->redirectToRoute('app_category_list');
-        }
-        return $this->render('category/create.html.twig', []);
+           //enregistrer l'auteur dans la bd grace au repository
+           $repository->add($category, true);
+
+           //redirection de l'utilisateur vers la liste des auteurs
+           return $this->redirectToRoute('app_category_list');
+       }
+       return $this->render('category/create.html.twig', [
+           'form' => $form->createView(),
+       ]);
     }
 
 
@@ -75,24 +79,28 @@ class CategoryController extends AbstractController
         //recuperer la categorie à partir de l'id
         $category = $repository->find($id);
 
-        //tester si la formulaire est envoyé
-        if($request->isMethod('POST')){
-            
-             //récupérer les données du formulaire
-             $name= $request->request->get('name');
+       //création du formulaire et son préremplissage
+       $form= $this->createForm(AdminCategoryType::class, $category);
 
-             //mise à jour des informations de la categorie
-            $category->setName($name);
+       //remplir le formulaire avec les données de l'utilisateur
+       $form->handleRequest($request);
+
+       //tester si la formulaire est envoyé et est valide
+       if($form->isSubmitted() && $form->isValid()){
            
+            //récupérer les données du formulaire dans un objet category
+            $category = $form->getData();
 
-            //enregistrer la categorie
-            $repository->add($category , true);
+           //enregistrer la category
+           $repository->add($category , true);
 
-            //redirection vers la page de liste
-            return $this->redirectToRoute('app_category_list');
+           //redirection vers la page de liste
+           return $this->redirectToRoute('app_category_list');
+       }
 
-        }
-        return $this->render('category/update.html.twig', [ 'category' => $category] );
+        return $this->render('category/update.html.twig', [
+            'form' => $form->createView(),
+            'category' => $category ] );
     }
 
      /**
