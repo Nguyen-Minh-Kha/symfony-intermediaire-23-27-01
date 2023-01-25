@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Author;
+use App\Form\AdminAuthorType;
 use App\Repository\AuthorRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,19 +28,18 @@ class AuthorController extends AbstractController
      */
     public function create(Request $request , AuthorRepository $repository): Response
     {
-        //tester si le formulaire a était envoyé
-        if ($request->isMethod('POST')){
+     
+        //création du formulaire je n'ai pas besoin d'ajouter un objet Author en paramétre car je ne fait pas de préremplissage
+        $form= $this->createForm(AdminAuthorType::class);
+        //remplir le formulaire avec les données envoyées par l'utilisateur
+        $form->handleRequest($request);
 
-            //récupérer les données du formulaire
-            $name= $request->request->get('name');
-            $description= $request->request->get('description');
-            $imageUrl= $request->request->get('imageUrl');
 
-            //créer l'entité auteur à partir des données du formulaire
-            $author= new Author();
-            $author->setName($name);
-            $author->setDescription($description);
-            $author->setImageUrl($imageUrl);
+        //tester si le formulaire a était envoyé et est valide
+        if ($form->isSubmitted() && $form->isValid()){
+
+            //récupérer les données du formulaire dans un objet author
+            $author= $form->getData();
 
             //enregistrer l'auteur dans la bd grace au repository
             $repository->add($author, true);
@@ -47,7 +47,9 @@ class AuthorController extends AbstractController
             //redirection de l'utilisateur vers la liste des auteurs
             return $this->redirectToRoute('app_author_list');
         }
-        return $this->render('author/create.html.twig', []);
+        return $this->render('author/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
 

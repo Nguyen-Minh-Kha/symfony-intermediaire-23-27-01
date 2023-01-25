@@ -4,18 +4,8 @@
 
 {% block body %}
         <h1>{% block pageTitle %} Nouvel auteur {% endblock %}</h1>
-    <form method= "POST">
-        <label for="name"> Nom de l'auteur: </label>
-        <input type="text" name="name" id="name" value="{% block nameValue '' %}"/>
-
-        <label for="description"> Description: </label>
-        <textarea name="description" id="description"> {% block descriptionValue '' %} </textarea>
-
-        <label for="imageUrl"> Url de l'image: </label>
-        <input type="url" name="imageUrl" id="imageUrl" value={% block imageUrlValue '' %}/>
         
-        <button type="submit">Envoyer</button>
-    </form>
+        {{ form(form) }}
 
 
 
