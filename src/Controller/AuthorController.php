@@ -79,18 +79,17 @@ class AuthorController extends AbstractController
         //recuperer l'auteur à partir de l'id
         $author = $repository->find($id);
 
-        //tester si la formulaire est envoyé
-        if($request->isMethod('POST')){
-            
-             //récupérer les données du formulaire
-             $name= $request->request->get('name');
-             $description= $request->request->get('description');
-             $imageUrl= $request->request->get('imageUrl');
+        //création du formulaire et son préremplissage
+        $form= $this->createForm(AdminAuthorType::class, $author);
 
-             //mise à jour des informations de l'auteur
-            $author->setName($name);
-            $author->setDescription($description);
-            $author->setImageUrl($imageUrl);
+        //remplir le formulaire avec les données de l'utilisateur
+        $form->handleRequest($request);
+
+        //tester si la formulaire est envoyé et est valide
+        if($form->isSubmitted() && $form->isValid()){
+            
+             //récupérer les données du formulaire dans un objet author
+             $author = $form->getData();
 
             //enregistrer l'auteur
             $repository->add($author , true);
@@ -101,7 +100,9 @@ class AuthorController extends AbstractController
         }
 
 
-        return $this->render('author/update.html.twig', [ 'author' => $author] );
+        return $this->render('author/update.html.twig', [ 
+            'form' => $form->createView(),
+            'author' => $author] ); // cet argument sert à afficher le nom de l'auteur dans le twig
     }
 
 
