@@ -104,4 +104,21 @@ class BookController extends AbstractController
 
     }
 
+
+
+
+     /**
+     * @Route("/admin/livres/{id}/supprimer", name="app_book_remove")
+     */
+    public function remove(int $id , BookRepository $repository): Response
+    {
+        //recuperer le livre depuis son id
+        $book = $repository->find($id);
+
+        //suprimer le livre de la base de données
+        $repository->remove($book, true);
+
+        //redirection vers la liste des categories
+        return $this->redirectToRoute('app_book_list');
+    }
 }

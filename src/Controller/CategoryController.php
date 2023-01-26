@@ -106,7 +106,7 @@ class CategoryController extends AbstractController
      /**
      * @Route("/admin/categories/{id}/supprimer", name="app_category_remove")
      */
-    public function remove(int $id, Request $request , CategoryRepository $repository): Response
+    public function remove(int $id , CategoryRepository $repository): Response
     {
         //recuperer la categorie depuis son id
         $category = $repository->find($id);

@@ -32,7 +32,7 @@ class AdminBookType extends AbstractType
                 'label'=> 'Description du livre',
                  'required'=>  false     
             ])
-            ->add('imageUrl', UrlType::class,[
+            ->add('imageUrl', TextType::class,[
                 'label'=> 'image du livre',
                  'required'=>  false     
             ])

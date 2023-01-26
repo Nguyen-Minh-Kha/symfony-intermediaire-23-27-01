@@ -12,16 +12,22 @@
         <div>
             {% if book.imageUrl %}
              <p>
-                <img src="{{ book.imageUrl }}" alt="{{ book.title }}" />
+                {# afin d'afficher une image locale:
+                 <img src="{{ asset('images/maze.png') }}" alt="{{ book.title }}" /> 
+                 #}
+                 <img src="{{ book.imageUrl }}" alt="{{ book.title }}" />
              </p>
             {% endif %}
             <p> {{ book.title }}</p>
+            <h3> {{ book.price }} € </h3>
             <h3> {{ book.description }}</h3>
-            <p> {{ book.author.description }}</p>
+            <p> {{ book.author.name }}</p>
+            {% for cat in book.categories %}
+                <p> {{ cat.name }}</p>
+            {% endfor %}
 
-          {# ceci est un commentaire
+          
             <a href="{{ path('app_book_remove' , {id: book.id})}}"> Supprimer</a>
-            #}
             <a href="{{ path('app_book_update' , {id: book.id})}}"> Modifier</a>
             
         </div>
