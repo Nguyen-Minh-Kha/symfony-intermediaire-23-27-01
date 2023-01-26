@@ -68,4 +68,40 @@ class BookController extends AbstractController
 
     }
 
+
+     /**
+     * @Route("/admin/livres/{id}", name="app_book_update")
+     */
+    public function update(int $id, Request $request, BookRepository $repository): Response
+    {
+
+        //récuperer le livre de l'id
+        $book= $repository->find($id);
+
+        //création du formulaire je n'ai pas besoin d'ajouter un objet Book en paramétre car je ne fait pas de préremplissage
+        $form= $this->createForm(AdminBookType::class, $book);
+        //remplir le formulaire avec les données envoyées par l'utilisateur
+        $form->handleRequest($request);
+
+        //tester si le formulaire a était envoyé et est valide
+        if ($form->isSubmitted() && $form->isValid()){
+
+            //récupérer les données du formulaire dans un objet book
+            $book= $form->getData();
+
+            //enregistrer le livre dans la bd grace au repository
+            $repository->add($book, true);
+
+            //redirection de l'utilisateur vers la liste des livres
+            return $this->redirectToRoute('app_book_list');
+        }
+        return $this->render('book/update.html.twig', [
+            'form' => $form->createView(),
+            'book' => $book,
+        ]);
+
+
+
+    }
+
 }

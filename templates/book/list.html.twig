@@ -16,12 +16,14 @@
              </p>
             {% endif %}
             <p> {{ book.title }}</p>
+            <h3> {{ book.description }}</h3>
             <p> {{ book.author.description }}</p>
 
           {# ceci est un commentaire
             <a href="{{ path('app_book_remove' , {id: book.id})}}"> Supprimer</a>
-            <a href="{{ path('app_book_update' , {id: book.id})}}"> Modifier</a>
             #}
+            <a href="{{ path('app_book_update' , {id: book.id})}}"> Modifier</a>
+            
         </div>
     {% endfor %}
 {% endblock %}
