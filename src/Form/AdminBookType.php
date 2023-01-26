@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class AdminBookType extends AbstractType
 {
@@ -27,7 +28,7 @@ class AdminBookType extends AbstractType
                 'label'=> 'Prix du livre',
                  'required'=> true   
             ])
-            ->add('description', TextAreaType::class,[
+            ->add('description', TextareaType::class,[
                 'label'=> 'Description du livre',
                  'required'=>  false     
             ])
