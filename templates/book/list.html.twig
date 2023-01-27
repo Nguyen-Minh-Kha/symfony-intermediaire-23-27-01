@@ -21,7 +21,12 @@
             <p> {{ book.title }}</p>
             <h3> {{ book.price }} € </h3>
             <h3> {{ book.description }}</h3>
-            <p> {{ book.author.name }}</p>
+            {% if book.author %}
+                <p> {{ book.author.name }}</p>
+            {% endif %}
+            {% if book.publishinghouse %}
+                <p> {{ book.publishinghouse.name }}</p>
+            {% endif %}
             {% for cat in book.categories %}
                 <p> {{ cat.name }}</p>
             {% endfor %}
