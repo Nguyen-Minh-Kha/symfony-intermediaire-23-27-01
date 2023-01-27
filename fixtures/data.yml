@@ -1,0 +1,43 @@
+App\Entity\Category:
+  category_1:
+    name: "Science fiction"
+  category_2:
+    name: "Policier"
+  category_3:
+    name: "Drama"
+  category_4:
+    name: "Literature"
+  category_{5..25}:
+    name: "<fr_FR:word()>"
+
+
+App\Entity\Author:
+  auteur_1:
+    name: "J.K Rowling"
+    description: "<fr_FR:realText(100)>"
+    imageUrl: "<imageUrl()>"
+
+  auteur_{2..50}:
+    name: "<fr_FR:name()>"
+    description: "<fr_FR:realText(100)>"
+    imageUrl: "<imageUrl()>"
+
+
+App\Entity\PublishingHouse:
+  house_1:
+    name: Galimard
+    description: "<fr_FR:realText(100)>"
+    country: "France"
+  house_{2..50}:
+    name: "<fr_FR:company()>"
+    description: "<fr_FR:realText(100)>"
+    country: "<fr_FR:countryCode()>"
+
+
+    
+
+
+    
+
+
+# Générer ensuite les auteur de 2 à 50 avec que des fausses données !!
