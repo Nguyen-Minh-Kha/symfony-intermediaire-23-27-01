@@ -22,7 +22,7 @@ class AdminPublishingHouseType extends AbstractType
             ])
             ->add('description', TextareaType::class,[
                 'label' => "Description de la maison d'édition",
-                'required' => true 
+                'required' => false 
             ])
             ->add('country', CountryType::class,[
                 'required' => false,

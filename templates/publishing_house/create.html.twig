@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle maison d'édition{% endblock %}
+
+{% block body %}
+
+    <nav>
+    <a href="{{ path('app_publishing_house_list') }}"> Liste des maisons d'édition</a>
+    </nav>
+        <h1>{% block pageTitle %} Nouvelle maison d'édition {% endblock %}</h1>
+        
+        {{ form(form) }}
+
+
+
+{% endblock %}

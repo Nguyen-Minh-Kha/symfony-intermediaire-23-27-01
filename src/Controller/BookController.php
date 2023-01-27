@@ -78,7 +78,7 @@ class BookController extends AbstractController
         //récuperer le livre de l'id
         $book= $repository->find($id);
 
-        //création du formulaire je n'ai pas besoin d'ajouter un objet Book en paramétre car je ne fait pas de préremplissage
+        //création du formulaire 
         $form= $this->createForm(AdminBookType::class, $book);
         //remplir le formulaire avec les données envoyées par l'utilisateur
         $form->handleRequest($request);
