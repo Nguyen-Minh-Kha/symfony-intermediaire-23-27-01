@@ -49,6 +49,11 @@ class Book
      */
     private $categories;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=PublishingHouse::class, inversedBy="books")
+     */
+    private $publishinghouse;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -139,6 +144,18 @@ class Book
     public function removeCategory(Category $category): self
     {
         $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    public function getPublishinghouse(): ?PublishingHouse
+    {
+        return $this->publishinghouse;
+    }
+
+    public function setPublishinghouse(?PublishingHouse $publishinghouse): self
+    {
+        $this->publishinghouse = $publishinghouse;
 
         return $this;
     }
