@@ -18,16 +18,15 @@ class HomeController extends AbstractController
     }
 
     /**
-    * ex1: show last 20 books by price 
-    */
-    #[Route('/front/results', name: 'app_home_home', methods: ['GET'])]
+     * ex1: show last 20 books by price 
+     */
+    #[Route('/front/results', name: 'app_front_home_home')]
     public function home(BookRepository $bookRepository): Response
     {
-         $books = $bookRepository->findAllOrderedByPrice();
+        $books = $bookRepository->findAllOrderedByPrice();
 
-         return $this->render('front/home/result.html.twig' , [
+        return $this->render('front/home/result.html.twig', [
             'books' => $books
-         ]);
+        ]);
     }
-
 }
