@@ -63,4 +63,16 @@ class BookRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findAllOrderedByPrice(): array
+    {
+        $qb = $this->createQueryBuilder('book');
+
+        return $qb-> orderBy('book.price' , 'DESC')
+                  -> setMaxResults(20)
+                  ->getQuery()
+                  ->getResult();
+    }
+
+
 }
