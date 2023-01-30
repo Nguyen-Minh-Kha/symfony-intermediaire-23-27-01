@@ -15,7 +15,7 @@ class HomeController extends AbstractController
     public function home(BookRepository $repository): Response
     {
         // récupere la liste des livres selon la fonction qu'on a déclaré
-        $books= $repository->findAllOrderedByPrice();
+        $books = $repository->findAllOrderedByPrice();
 
         //affichage de la page d'accueil
         return $this->render('front/home/home.html.twig', [

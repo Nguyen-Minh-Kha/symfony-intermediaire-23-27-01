@@ -3,7 +3,7 @@
 {% block title %}page d'accueil{% endblock %}
 
 {% block body %}
-    <h1>Nos derniers livres </h1>
+    <h1> {% block pageTitle %} Nos derniers livres {% endblock %} </h1>
 <hr />
 
     {% for book in books %}
@@ -12,8 +12,8 @@
             <p> Prix: {{ book.price }} €</p>
             <p> Catégories: </p>
             <nav>
-                {% for category in book.categories %}
-                    <a href="">{{ category.name}}</a>
+                {% for cat in book.categories %}
+                    <a href="{{ path('app_front_category_display' , {id: cat.id} )}}">{{ cat.name}}</a>
                 {% endfor %}
             </nav>
         </div>
