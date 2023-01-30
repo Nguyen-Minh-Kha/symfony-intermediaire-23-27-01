@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des livres{% endblock %}
+
+{% block body %}
+    <h1>Liste des derniers livres de la catégorie "{{category.getName}}"classé par prix</h1>
+    
+    <nav>
+    <a href="{{ path('app_book_create') }}"> Ajouter un livre</a>
+    </nav>
+    <hr />
+    {% for book in books %}
+    {% set counter = ( counter | default(0) ) + 1 %}
+        <div>
+            <p> {{ counter ~ ' ). ' ~ book.title }}</p>
+            <p> Prix: {{ book.price }} </p>
+            <p> Auteur: {{ book.author.name }}</p>
+            <p> Catégories: </p>
+            <nav> 
+                {% for category in book.categories %}
+                    <a href="{{path('app_front_category_display', {id: category.id})}}"> {{category.name}}</a>
+                {% endfor %}
+            </nav>
+        </div>
+        <hr />
+    {% endfor %}
+{% endblock %}
