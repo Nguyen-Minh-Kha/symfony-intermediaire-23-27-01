@@ -34,10 +34,29 @@ App\Entity\PublishingHouse:
     country: "<fr_FR:countryCode()>"
 
 
-    
+
+App\Entity\Book:
+  book_1:
+    title: "Harry Potter"
+    price: 5.95
+    author: "@auteur_1"
+    description: "<fr_FR:realText(100)>"
+    imageUrl: "<imageUrl()>"
+    categories: "5x @category_*"
+    publishingHouse: "@house_*"
+
+  book_{2..50}:
+    title: "<fr_FR:word()>"
+    price: "<randomFloat(2, 5, 30)>"
+    author: "@auteur_*"
+    description: "<fr_FR:realText(100)>"
+    imageUrl: "<imageUrl()>"
+    categories: "5x @category_*"
+    publishingHouse: "@house_*"
 
 
     
 
 
-# Générer ensuite les auteur de 2 à 50 avec que des fausses données !!
+    
+
