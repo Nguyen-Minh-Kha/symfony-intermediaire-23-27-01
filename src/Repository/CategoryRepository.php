@@ -54,6 +54,7 @@ class CategoryRepository extends ServiceEntityRepository
         }
 
         $qd->orderBy("category.$criteria->orderBy", $criteria->direction)
+            ->setMaxResults($criteria->limit)
             ->setFirstResult(($criteria->page - 1) * $criteria->limit);
 
         return $qd
