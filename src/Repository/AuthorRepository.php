@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Author;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\DTO\SearchAuthorCriteria;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Author>
@@ -37,6 +38,25 @@ class AuthorRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+    * returns books by author 
+    */
+    public function findByCriteria(SearchAuthorCriteria $criteria) : array
+    {
+        $qd = $this->createQueryBuilder('author');
+
+        if ($criteria->name) {
+            $qd->andWhere('author.Name LIKE :name')
+            ->setParameter('name', "%$criteria->name%");
+        }
+
+        $qd->orderBy("author.$criteria->orderBy", $criteria->direction)
+            ->setMaxResults($criteria->limit)
+            ->setFirstResult(($criteria->page - 1) * $criteria->limit);
+
+        return $qd->getQuery()->getResult();
     }
 
 //    /**

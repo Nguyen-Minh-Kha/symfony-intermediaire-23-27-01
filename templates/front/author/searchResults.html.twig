@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultat de la recherche{% endblock %}
+
+{% block body %}
+    <h1>Résultat de votre recherche</h1>
+    <hr />
+        {% for author in authors %}
+        <h2> {{author.name}} </h2>
+        <hr />
+        <div>
+            {% for book in author.books %}
+                <p> titre: {{ book.title }}</p>
+                <p> Prix: {{ book.price }} </p>
+                <p> Catégories: </p>
+            <nav> 
+                {% for category in book.categories %}
+                    <a href=""> {{category.name}}</a>
+                {% endfor %}
+            </nav>
+            <hr />
+            {% endfor %}
+        </div>
+        
+        {% endfor %}
+{% endblock %}

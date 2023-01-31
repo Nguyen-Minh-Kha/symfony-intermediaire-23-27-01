@@ -57,8 +57,7 @@ class CategoryRepository extends ServiceEntityRepository
             ->setMaxResults($criteria->limit)
             ->setFirstResult(($criteria->page - 1) * $criteria->limit);
 
-        return $qd
-            ->getQuery()->getResult();
+        return $qd->getQuery()->getResult();
     }
 
     //    /**

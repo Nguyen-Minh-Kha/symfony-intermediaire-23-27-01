@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\DTO\SearchAuthorCriteria;
 use App\Entity\Author;
 use App\Form\AdminAuthorType;
+use App\Form\SearchAuthorType;
 use App\Repository\AuthorRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,23 +25,23 @@ class AuthorController extends AbstractController
     }
 
 
-     /**
+    /**
      * @Route("/admin/auteurs/nouveau", name="app_author_create")
      */
-    public function create(Request $request , AuthorRepository $repository): Response
+    public function create(Request $request, AuthorRepository $repository): Response
     {
-     
+
         //création du formulaire je n'ai pas besoin d'ajouter un objet Author en paramétre car je ne fait pas de préremplissage
-        $form= $this->createForm(AdminAuthorType::class);
+        $form = $this->createForm(AdminAuthorType::class);
         //remplir le formulaire avec les données envoyées par l'utilisateur
         $form->handleRequest($request);
 
 
         //tester si le formulaire a était envoyé et est valide
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
 
             //récupérer les données du formulaire dans un objet author
-            $author= $form->getData();
+            $author = $form->getData();
 
             //enregistrer l'auteur dans la bd grace au repository
             $repository->add($author, true);
@@ -55,63 +57,77 @@ class AuthorController extends AbstractController
 
 
 
-     /**
+    /**
      * @Route("/admin/auteurs", name="app_author_list")
      */
-    public function list(AuthorRepository $repository): Response
+    public function list(Request $request, SearchAuthorCriteria $searchAuthorCriteria, AuthorRepository $repository): Response
     {
 
-        //recuperer les auteurs depuis la bd
-        $authors= $repository->findAll(); //retourne la liste compléte des auteurs
+        // //recuperer les auteurs depuis la bd
+        // $authors= $repository->findAll(); //retourne la liste compléte des auteurs
 
-        return $this->render('author/list.html.twig', [
-            'authors' => $authors,
-        ] );
+        $form = $this->createForm(SearchAuthorType::class, $searchAuthorCriteria);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $searchAuthorCriteria = $form->getData();
+
+            $authors = $repository->findByCriteria($searchAuthorCriteria);
+
+            //dd($authors);
+
+            return $this->render('front/author/searchResults.html.twig', [
+                'authors' => $authors,
+            ]);
+        }
+
+        return $this->render('front/home/searchForm.html.twig', [
+            'searchForm' => $form->createView(),
+        ]);
     }
 
 
-     /**
+    /**
      * @Route("/admin/auteurs/{id}", name="app_author_update")
      */
-    public function update(int $id, Request $request , AuthorRepository $repository): Response
+    public function update(int $id, Request $request, AuthorRepository $repository): Response
     {
         //recuperer l'auteur à partir de l'id
         $author = $repository->find($id);
 
         //création du formulaire et son préremplissage
-        $form= $this->createForm(AdminAuthorType::class, $author);
+        $form = $this->createForm(AdminAuthorType::class, $author);
 
         //remplir le formulaire avec les données de l'utilisateur
         $form->handleRequest($request);
 
         //tester si la formulaire est envoyé et est valide
-        if($form->isSubmitted() && $form->isValid()){
-            
-             //récupérer les données du formulaire dans un objet author
-             $author = $form->getData();
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            //récupérer les données du formulaire dans un objet author
+            $author = $form->getData();
 
             //enregistrer l'auteur
-            $repository->add($author , true);
+            $repository->add($author, true);
 
             //redirection vers la page de liste
             return $this->redirectToRoute('app_author_list');
-
         }
 
 
-        return $this->render('author/update.html.twig', [ 
+        return $this->render('author/update.html.twig', [
             'form' => $form->createView(),
-            'author' => $author] ); // cet argument sert à afficher le nom de l'auteur dans le twig
+            'author' => $author
+        ]); // cet argument sert à afficher le nom de l'auteur dans le twig
     }
 
 
 
 
-     /**
+    /**
      * @Route("/admin/auteurs/{id}/supprimer", name="app_author_remove")
      */
-    public function remove(int $id, Request $request , AuthorRepository $repository): Response
+    public function remove(int $id, Request $request, AuthorRepository $repository): Response
     {
         //recuperer l'auteur depuis son id
         $author = $repository->find($id);
