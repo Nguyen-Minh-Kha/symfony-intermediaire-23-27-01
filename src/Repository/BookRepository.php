@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Book;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\DTO\SearchBookCriteria;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Book>
@@ -85,5 +86,49 @@ class BookRepository extends ServiceEntityRepository
                   ->getQuery() //ecrire la requete
                   ->getResult(); //recuperer les resultats de la requete
     }
+
+    public function findByCriteria(SearchBookCriteria $criteria): array
+    {
+
+        //Création du query builder
+        $qb= $this->createQueryBuilder('book');
+
+        //Filtrer les résultats selon le titre si c'est spécifié
+        if($criteria->title){
+            $qb->andWhere('book.title LIKE :title')
+                ->setParameter('title', "%$criteria->title%");
+        }
+
+        //Filtrer les résultats par auteurs
+        if(!empty($criteria->authors)){
+            $qb->leftJoin('book.author', 'author')// le join est fait entre book et author
+               ->andWhere('author.id IN (:authorIds)')
+               ->setParameter('authorIds' , $criteria->authors);
+        }
+
+        //Filtrer les résultats par catégories
+        if(!empty($criteria->categories)){
+            $qb->leftJoin('book.categories', 'category')// le join est fait entre book et category
+               ->andWhere('category.id IN (:catIds)')
+               ->setParameter('catIds' , $criteria->categories);
+        }
+
+        //Filtrer par les prix minimals
+        if($criteria->minPrice){
+            $qb->andWhere('book.price >= :minPrice')
+                ->setParameter('minPrice' , $criteria->minPrice);
+        }
+
+        //Filtrer par les prix maximals
+        if($criteria->maxPrice){
+            $qb->andWhere('book.price <= :maxPrice')
+                ->setParameter('maxPrice' , $criteria->maxPrice);
+        }
+
+
+        return $qb ->getQuery() //ecrire la requete
+                   ->getResult(); //recuperer les resultats de la requete
+    }
+
 
 }
