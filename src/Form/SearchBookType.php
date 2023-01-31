@@ -14,6 +14,16 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+/* 
+| nom        | type       | requis |
+| ---------- | ---------- | ------ |
+| title      | TextType   | false  |
+| authors    | EntityType | false  |
+| categories | EntityType | false  |
+| minPrice   | MoneyType  | false  |
+| maxPrice   | MoneyType  | false  |
+ */
+
 class SearchBookType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -57,7 +67,7 @@ class SearchBookType extends AbstractType
         $resolver->setDefaults([
             // Configure your form options here
             'data_class' => SearchBookCriteria::class,
-            'method' => 'GET', 
+            'method' => 'GET',
             'csrf_protection' => false
         ]);
     }
