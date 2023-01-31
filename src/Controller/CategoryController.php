@@ -72,7 +72,7 @@ class CategoryController extends AbstractController
 
             $categories = $repository->findByCriteria($searchCategoryCriteria);
             //dd($categories);
-            return $this->render('front/home/searchCategoriesResults.html.twig', [
+            return $this->render('front/category/searchCategoriesResults.html.twig', [
                 'categories' => $categories,
             ]);
         }
