@@ -8,6 +8,10 @@
     <a href="{{ path('app_author_create') }}"> Ajouter un auteur</a>
     </nav>
 
+
+    <hr />
+        {{ form(form) }}
+    <hr />
     {% for author in authors %}
         <div>
             {% if author.imageUrl %}

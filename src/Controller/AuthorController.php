@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Author;
 use App\Form\AdminAuthorType;
+use App\Form\SearchAuthorType;
+use App\DTO\SearchAuthorCriteria;
 use App\Repository\AuthorRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,14 +60,24 @@ class AuthorController extends AbstractController
      /**
      * @Route("/admin/auteurs", name="app_author_list")
      */
-    public function list(AuthorRepository $repository): Response
+    public function list(AuthorRepository $repository, Request $request): Response
     {
 
+        //1. Création des critéres de recherche
+        $criteria = new SearchAuthorCriteria();
+
+        //2. Création du formulaire
+        $form = $this->createForm(SearchAuthorType::class, $criteria);
+
+        //3. Remplir le formulaire avec les critéres de recherche de l'utilisateur
+        $form->handleRequest($request);
+
         //recuperer les auteurs depuis la bd
-        $authors= $repository->findAll(); //retourne la liste compléte des auteurs
+        $authors= $repository->findByCriteria($criteria); //retourne les résultats de la recherche
 
         return $this->render('author/list.html.twig', [
             'authors' => $authors,
+            'form' => $form->createView(),
         ] );
 
     }
