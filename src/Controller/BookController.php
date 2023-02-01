@@ -13,7 +13,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @IsGranted("ROLE_ADMIN")
- * 
  */
 class BookController extends AbstractController
 {
