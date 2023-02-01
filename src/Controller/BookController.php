@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * @IsGranted('ROLE_ADMIN')
+ */
 class BookController extends AbstractController
 {
     /**
@@ -22,22 +25,22 @@ class BookController extends AbstractController
     }
 
 
-     /**
+    /**
      * @Route("/admin/livres/nouveau", name="app_book_create")
      */
-    public function create(Request $request , BookRepository $repository): Response
+    public function create(Request $request, BookRepository $repository): Response
     {
         //création du formulaire je n'ai pas besoin d'ajouter un objet Book en paramétre car je ne fait pas de préremplissage
-        $form= $this->createForm(AdminBookType::class);
+        $form = $this->createForm(AdminBookType::class);
         //remplir le formulaire avec les données envoyées par l'utilisateur
         $form->handleRequest($request);
 
 
         //tester si le formulaire a était envoyé et est valide
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
 
             //récupérer les données du formulaire dans un objet book
-            $book= $form->getData();
+            $book = $form->getData();
 
             //enregistrer le livre dans la bd grace au repository
             $repository->add($book, true);
@@ -53,41 +56,40 @@ class BookController extends AbstractController
 
 
 
-     /**
+    /**
      * @Route("/admin/livres", name="app_book_list")
      */
     public function list(BookRepository $repository): Response
     {
 
         //recuperer les livres depuis la bd
-        $books= $repository->findAll(); //retourne la liste compléte des livres
+        $books = $repository->findAll(); //retourne la liste compléte des livres
 
         return $this->render('book/list.html.twig', [
             'books' => $books,
-        ] );
-
+        ]);
     }
 
 
-     /**
+    /**
      * @Route("/admin/livres/{id}", name="app_book_update")
      */
     public function update(int $id, Request $request, BookRepository $repository): Response
     {
 
         //récuperer le livre de l'id
-        $book= $repository->find($id);
+        $book = $repository->find($id);
 
         //création du formulaire 
-        $form= $this->createForm(AdminBookType::class, $book);
+        $form = $this->createForm(AdminBookType::class, $book);
         //remplir le formulaire avec les données envoyées par l'utilisateur
         $form->handleRequest($request);
 
         //tester si le formulaire a était envoyé et est valide
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
 
             //récupérer les données du formulaire dans un objet book
-            $book= $form->getData();
+            $book = $form->getData();
 
             //enregistrer le livre dans la bd grace au repository
             $repository->add($book, true);
@@ -99,18 +101,15 @@ class BookController extends AbstractController
             'form' => $form->createView(),
             'book' => $book,
         ]);
-
-
-
     }
 
 
 
 
-     /**
+    /**
      * @Route("/admin/livres/{id}/supprimer", name="app_book_remove")
      */
-    public function remove(int $id , BookRepository $repository): Response
+    public function remove(int $id, BookRepository $repository): Response
     {
         //recuperer le livre depuis son id
         $book = $repository->find($id);

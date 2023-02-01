@@ -52,3 +52,21 @@ App\Entity\Book:
     categories: "5x @category_*"
     publishingHouse: "@house_*"
 
+App\Entity\User:
+  user_admin:
+    email: "admin@mail.com"
+    roles: ["ROLE_ADMIN"]
+    #password: "password"
+    password: \$2y\$13\$RX6WCP2Um4QE5bAdSzkHuuku3lkbV8kuFMTh3NAPD5eMXuOQHqHqK
+
+  user_user:
+    email: "user@mail.com"
+    roles: ["ROLE_USER"]
+    #password: "password"
+    password: \$2y\$13\$RX6WCP2Um4QE5bAdSzkHuuku3lkbV8kuFMTh3NAPD5eMXuOQHqHqK
+  
+  user_{1..50}:
+    email: "<safeEmail()>"
+    roles: ["ROLE_USER"]
+    #password: "password"
+    password: \$2y\$13\$RX6WCP2Um4QE5bAdSzkHuuku3lkbV8kuFMTh3NAPD5eMXuOQHqHqK

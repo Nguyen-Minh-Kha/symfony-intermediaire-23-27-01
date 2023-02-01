@@ -1,3 +1,5 @@
 fixture load 
 
 symfony console hautelook:fixtures:load
+
+symfony console h:f:l
