@@ -125,6 +125,17 @@ class BookRepository extends ServiceEntityRepository
                 ->setParameter('maxPrice' , $criteria->maxPrice);
         }
 
+        //filtre par maison d'édition
+        if(!empty($criteria->publishingHouses)){
+            $qb 
+            ->leftJoin('book.publishinghouse', 'PublishingHouse')// le join est fait entre book et category
+            ->andWhere('PublishingHouse.id IN (:publishing)')
+            ->setParameter('publishing' , $criteria->publishingHouses);
+        }
+
+        $qb->orderBy("book.$criteria->orderBy" , $criteria->direction)
+            ->setMaxResults($criteria->limit)
+            ->setFirstResult(($criteria->page - 1) * $criteria->limit);
 
         return $qb ->getQuery() //ecrire la requete
                    ->getResult(); //recuperer les resultats de la requete
