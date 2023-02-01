@@ -94,6 +94,15 @@ class BookRepository extends ServiceEntityRepository
             $qd->andWhere('book.price <= :maxPrice')
                 ->setParameter('maxPrice', $criteria->maxPrice);
         }
+        if ($criteria->publishingHouses) {
+            $qd->leftJoin('book.publishinghouse', 'house')
+                ->andWhere('house.id IN (:houseId)')
+                ->setParameter('houseId', $criteria->publishingHouses);
+        }
+
+        $qd->orderBy("book.$criteria->orderBy", $criteria->direction)
+            ->setMaxResults($criteria->limit)
+            ->setFirstResult(($criteria->page - 1) * $criteria->limit);
 
         return $qd->getQuery()->getResult();
     }
