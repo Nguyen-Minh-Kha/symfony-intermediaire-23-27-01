@@ -23,10 +23,12 @@
                 <a href="{{ path ('app_author_list') }}" > Les auteurs</a>
                 <a href="{{ path ('app_category_list') }}" > Les catégories</a>
                 <a href="{{ path ('app_publishing_house_list') }}" > Les maisons d'édition </a>
+                <a href="{{ path ('app_security_myProfile') }}" > Mon profil </a>
+                
 
             {% endif %}
         </nav>
-        
+
              {% if app.user %}
                 <nav>
                     <div> Bienvenu {{ app.user.email }}</div>
