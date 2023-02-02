@@ -2,15 +2,16 @@
 
 namespace App\Controller;
 
+use App\Form\ProfileType;
 use App\Form\RegistrationType;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class SecurityController extends AbstractController
 {
@@ -71,5 +72,34 @@ class SecurityController extends AbstractController
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @Route("/mon-profile", name="app_security_myProfile")
+     */
+    public function myProfile(UserRepository $repository, Request $request): Response
+    {
+        //récuperation de l'utilisateur connecté
+        $user= $this->getUser();
+
+        //creer le formulaire
+        $form= $this->createForm(ProfileType::class, $user);
+
+        //remplissage du formulaire 
+        $form->handleRequest($request);
+
+        //test si form is valid and submitted
+        if($form->isSubmitted() && $form->isValid()){
+            //on enregistre les modifications dans la bd via le repo
+            $repository->add($user, true);
+        }
+
+        //affichage de la page HTML
+        return $this->render('security/myProfile.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }
