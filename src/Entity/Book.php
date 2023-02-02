@@ -63,6 +63,7 @@ class Book
 
     /**
      * 
+     * @Gedmo\Mapping\Annotation\Timestampable(on="update")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
