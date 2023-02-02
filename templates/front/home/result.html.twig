@@ -15,6 +15,7 @@
             <p> {{ counter ~ ' ). ' ~ book.title }}</p>
             <p> Prix: {{ book.price }} </p>
             <p> Auteur: {{ book.author.name }}</p>
+            <p> Dérniére modification {{ book.updatedAt|date('d/m/Y à H:i', 'Europe/Paris') }} </p>
             <p> Catégories: </p>
             <nav> 
                 {% for category in book.categories %}
