@@ -38,13 +38,12 @@
         <nav>
             {% if app.user %}
                 <nav>
-                
-                <a href="{{ path ('app_security_myProfile') }}" > Mon profil </a>
-                    <a  href="{{ path('app_logout') }}"> Se déconnecter</a>
+                    <a href="{{ path ('app_security_myProfile') }}" > Mon profil </a>
+                    <a href="{{ path('app_logout') }}"> Se déconnecter</a>
                 </nav>
             {% else %} 
                 <nav>
-                    <a  href="{{ path('app_login') }}"> Se connecter</a>
+                    <a href="{{ path('app_login') }}"> Se connecter</a>
                 </nav>
             {% endif %}
         </nav>
