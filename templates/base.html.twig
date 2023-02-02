@@ -18,12 +18,20 @@
         <header>
         <nav>
             <a  href="{{ path('app_front_home_home') }}"> Accueil</a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path ('app_book_list') }}" > Les livres</a>
+                <a href="{{ path ('app_author_list') }}" > Les auteurs</a>
+                <a href="{{ path ('app_category_list') }}" > Les catégories</a>
+                <a href="{{ path ('app_publishing_house_list') }}" > Les maisons d'édition </a>
+
+            {% endif %}
+        </nav>
             {% if app.user %}
                 <nav>
                     <div> Bienvenu {{ app.user.email }}</div>
                 </nav>
             {% endif %}
-        </nav>
+        
         <nav>
 
             {% if app.user %}
