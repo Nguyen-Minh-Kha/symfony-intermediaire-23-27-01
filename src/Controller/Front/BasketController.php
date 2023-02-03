@@ -31,6 +31,16 @@ class BasketController extends AbstractController
         $repository ->add($basket , true);
 
         //Rediriger vers la page d'affichage du panier créé plus bas.
-        return $this->redirectToRoute('app_front_home_home');
+        return $this->redirectToRoute('app_front_basket_display');
+    }
+
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @Route("/mon-panier", name="app_front_basket_display")
+     */
+    public function display( BasketRepository $repository): Response
+    {
+        return $this->render('front/basket/display.html.twig');
     }
 }

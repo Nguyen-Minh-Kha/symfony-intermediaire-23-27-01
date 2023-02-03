@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Le panier{% endblock %}
+
+{% block body %}
+    <h1> Mon panier </h1>
+    {% for book in app.user.basket.books %}
+        <p>{{ book.title }}</p>
+        <p>Prix: {{ book.price }} </p>
+
+        <p>
+             <a href=""> Supprimer du panier </a>
+        </p>
+        <hr/>
+    {% endfor %}
+
+    <h2> Total : {{ app.user.basket.getTotal() }}</h2>
+
+{% endblock %}
