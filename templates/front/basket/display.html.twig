@@ -8,12 +8,14 @@
     {% if app.user.basket.books|length == 0 %}
         <h3> Votre panier est vide :) </h3>
     {% endif %}
+
+
     {% for book in app.user.basket.books %}
         <p>{{ book.title }}</p>
         <p>Prix: {{ book.price }} </p>
 
         <p>
-             <a href=""> Supprimer du panier </a>
+             <a href="{{ path('app_front_basket_remove', {id: book.id})}}"> Supprimer du panier </a>
         </p>
         <hr/>
     {% endfor %}
