@@ -39,6 +39,7 @@
             {% if app.user %}
                 <nav>
                     <a href="{{ path ('app_security_myProfile') }}" > Mon profil </a>
+                    <a href="{{ path ('app_basket_display') }}" > Mon panier </a>
                     <a href="{{ path('app_logout') }}"> Se déconnecter</a>
                 </nav>
             {% else %} 
