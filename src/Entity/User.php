@@ -55,6 +55,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $lastname;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Basket::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $basket;
+
+    public function __construct()
+    {
+        $this->basket = new Basket();
+        $this->basket->setUser($this);
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -188,6 +199,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastname(?string $lastname): self
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getBasket(): ?Basket
+    {
+        return $this->basket;
+    }
+
+    public function setBasket(?Basket $basket): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($basket === null && $this->basket !== null) {
+            $this->basket->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($basket !== null && $basket->getUser() !== $this) {
+            $basket->setUser($this);
+        }
+
+        $this->basket = $basket;
 
         return $this;
     }
