@@ -32,7 +32,7 @@ class BasketController extends AbstractController
 
         $basketRepository->save($basket, true);
 
-        return $this->redirectToRoute('app_basket');
+        return $this->redirectToRoute('app_basket_display');
     }
 
     /**
@@ -50,6 +50,8 @@ class BasketController extends AbstractController
 
             $books = $basket->getBooks();
 
+            // dd($books);
+
             $totalPrice = $basket->getTotal();
 
             return $this->render('basket/display.html.twig', [
@@ -59,7 +61,35 @@ class BasketController extends AbstractController
         } else {
             dd('user not found');
         }
+    }
 
-        
+    /**
+    * remove book from basket 
+    */
+    #IsGranted('ROLE_USER')
+    #[Route('/mon-panier/{id}/supprimer', name: 'app_basket_remove')]
+    public function remove(BasketRepository $basketRepository, Book $book): Response
+    {
+        $user = $this->getUser();
+
+        if ($user) {
+
+            $basket = $user->getBasket();
+
+            $basket->removeBook($book);
+
+            $basketRepository->save($basket, true);
+
+            $totalPrice = $basket->getTotal();
+
+            $books = $basket->getBooks();
+
+            return $this->render('basket/display.html.twig', [
+                'books' => $books,
+                'totalPrice' => $totalPrice
+            ]);
+        } else {
+            dd('user not found');
+        }
     }
 }
