@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Book;
+use App\Form\CardPaymentType;
 use App\Repository\BasketRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -52,14 +54,12 @@ class BasketController extends AbstractController
 
             // dd($books);
 
-            $totalPrice = $basket->getTotal();
-
             return $this->render('basket/display.html.twig', [
                 'books' => $books,
-                'totalPrice' => $totalPrice
+                'totalPrice' => $basket->getTotal()
             ]);
         } else {
-            dd('user not found');
+            return $this->redirectToRoute('app_login');
         }
     }
 
@@ -80,16 +80,48 @@ class BasketController extends AbstractController
 
             $basketRepository->save($basket, true);
 
-            $totalPrice = $basket->getTotal();
-
             $books = $basket->getBooks();
 
             return $this->render('basket/display.html.twig', [
                 'books' => $books,
-                'totalPrice' => $totalPrice
+                'totalPrice' => $basket->getTotal()
             ]);
         } else {
-            dd('user not found');
+            return $this->redirectToRoute('app_login');
+        }
+    }
+
+    /**
+    * validate the basket 
+    */
+    #IsGranted('ROLE_USER')
+    #[Route('/mon-panier/validation', name: 'app_basket_validate')]
+    public function validate(Request $request): Response
+    {
+        $user = $this->getUser();
+
+        if ($user) {
+
+            $basket = $user->getBasket();
+
+            $books = $basket->getBooks();
+
+            $form = $this->createForm(CardPaymentType::class);
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                // TODO
+            }
+
+            return $this->render('basket/summary.html.twig', [
+                'books' => $books,
+                'totalPrice' => $basket->getTotal(),
+                'cardPayment' => $form->createView(),
+            ]);
+
+        } else {
+            return $this->redirectToRoute('app_login');
         }
     }
 }

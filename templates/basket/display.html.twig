@@ -4,38 +4,39 @@
 
 {% block body %}
 
-    {% if books %}
+    {% if app.user.basket.books|length == 0 %}
+        <h1> Votre panier est vide </h1>
+    {% else %}
         <h1>Liste des livres dans mon panier</h1>
         <h2> prix total {{totalPrice}} €</h2>
+        <a href="{{ path ('app_basket_validate') }}"> passer la commande </a>
         <hr />
-            {% for book in books %}
-                <div>
-                    {% if book.imageUrl %}
-                    <p>
-                        {# afin d'afficher une image locale:
-                        <img src="{{ asset('images/maze.png') }}" alt="{{ book.title }}" /> 
-                        #}
-                        <img src="{{ book.imageUrl }}" alt="{{ book.title }}" />
-                    </p>
-                    {% endif %}
-                    <p> {{ book.title }}</p>
-                    <h3> {{ book.price }} € </h3>
-                    <h3> {{ book.description }}</h3>
-                    {% if book.author %}
-                        <p> {{ book.author.name }}</p>
-                    {% endif %}
-                    {% if book.publishinghouse %}
-                        <p> {{ book.publishinghouse.name }}</p>
-                    {% endif %}
-                    {% for cat in book.categories %}
-                        <p> {{ cat.name }}</p>
-                    {% endfor %}
-                    <a href="{{ path('app_basket_remove' , {id: book.id})}}"> Retirer du panier </a>
-                </div>
-                <hr />
-            {% endfor %}
-            
-    {% else %}
-        <p> Votre panier est vide </p>
+        {% for book in books %}
+            <div>
+                {% if book.imageUrl %}
+                <p>
+                    {# afin d'afficher une image locale:
+                    <img src="{{ asset('images/maze.png') }}" alt="{{ book.title }}" /> 
+                    #}
+                    <img src="{{ book.imageUrl }}" alt="{{ book.title }}" />
+                </p>
+                {% endif %}
+                <p> {{ book.title }}</p>
+                <h3> {{ book.price }} € </h3>
+                <h3> {{ book.description }}</h3>
+                {% if book.author %}
+                    <p> {{ book.author.name }}</p>
+                {% endif %}
+                {% if book.publishinghouse %}
+                    <p> {{ book.publishinghouse.name }}</p>
+                {% endif %}
+                {% for cat in book.categories %}
+                    <p> {{ cat.name }}</p>
+                {% endfor %}
+                <a href="{{ path('app_basket_remove' , {id: book.id})}}"> Retirer du panier </a>
+            </div>
+            <hr />
+        {% endfor %}
     {% endif %}
+  
 {% endblock %}
