@@ -2,23 +2,14 @@
 
 namespace App\DTO;
 
-/*
-cardNumber , int 
-name , string 
-expiredDate , date 
-cvcNumber , int 
-adress , string 
- */
+use App\Entity\Address;
+
+
 class Card
 {
-    public ?int $cardNumber = null;
-
-    public ?string $name = null;
-
-    public $expiredDate = null;
-
-    public ?int $cvcNumber = null;
-
-    public ?string $adress = null;
-
+    public ?string $cardNumber;
+    public ?string $cardName;
+    public ?string $expirationDate;
+    public ?string $cvc;
+    public ?Address $address;
 }

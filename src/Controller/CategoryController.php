@@ -61,7 +61,7 @@ class CategoryController extends AbstractController
     public function list(CategoryRepository $repository, Request $request, SearchCategoryCriteria $searchCategoryCriteria): Response
     {
 
-        //recuperer les auteurs depuis la bd
+        // recuperer les auteurs depuis la bd
         // $categories= $repository->findAll(); //retourne la liste compléte des auteurs
 
         $form = $this->createForm(SearchCategoryType::class, $searchCategoryCriteria);
